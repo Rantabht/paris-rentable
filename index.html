@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Paris rentable – Réserve ta date</title>
+<style>
+:root{--g:#00b200;--gd:#008a00;--gs:#e9f9e9;--bg:#fff;--card:#fff;--sf:#f4f7f5;--tx:#0f1f17;--mu:#64746b;--ln:#e4ece7;--sh:0 10px 40px rgba(15,31,23,.08);--gt:#008a00;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme="dark"]{--bg:#0a110d;--card:#121c16;--sf:#1a261f;--tx:#eef7f0;--mu:#96a99d;--ln:#24352b;--gs:#12301a;--sh:0 10px 40px rgba(0,0,0,.45);--gt:#6fe86f}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.45;transition:background .25s,color .25s}
+button,input,select,a{font-family:inherit}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--ln)}
+.top div{max-width:540px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:1.05rem}
+.brand i{width:14px;height:14px;border-radius:5px;background:var(--g);display:inline-block}
+.theme{width:42px;height:42px;border-radius:50%;border:1px solid var(--ln);background:var(--card);color:var(--tx);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.theme svg{width:21px;height:21px}
+.wrap{max-width:540px;margin:0 auto;padding:0 16px 56px}
+.hero{text-align:center;padding-top:28px}
+.avatar{position:relative;width:124px;height:124px;border-radius:50%;margin:0 auto;background:var(--g);padding:0;box-shadow:0 0 0 4px var(--bg),0 0 0 7px var(--g)}
+.avatar .im{width:100%;height:100%;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.avatar .vb{position:absolute;right:-6px;bottom:-2px;width:40px;height:40px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25))}
+h1{margin:22px 0 2px;font-size:1.75rem;letter-spacing:-.03em}
+.sub{margin:0;color:var(--mu)}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.chip{background:var(--gs);color:var(--gt);font-weight:700;font-size:.8rem;padding:7px 12px;border-radius:99px}
+.price{margin-top:18px;display:inline-flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--ln);box-shadow:var(--sh);border-radius:18px;padding:12px 20px;text-align:left}
+.price b{font-size:1.6rem;color:var(--g);letter-spacing:-.02em}
+.price span{color:var(--mu);font-size:.85rem;line-height:1.3}
+.card{margin-top:24px;background:var(--card);border:1px solid var(--ln);box-shadow:var(--sh);border-radius:26px;padding:18px}
+.nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.nav h2{margin:0;font-size:1.25rem;text-transform:capitalize}
+.nav button{width:42px;height:42px;border-radius:14px;border:1px solid var(--ln);background:var(--sf);color:var(--tx);font-size:1.3rem;cursor:pointer}
+.nav button:disabled{opacity:.3;cursor:default}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.dow{text-align:center;font-size:.72rem;font-weight:700;color:var(--mu);padding-bottom:4px}
+.day{aspect-ratio:1;border-radius:14px;border:1.5px solid var(--ln);background:var(--card);color:var(--tx);font-size:1rem;font-weight:700;cursor:pointer;padding:0;transition:.15s}
+.day.free{border-color:var(--g);color:var(--gt)}
+.day.free:hover{background:var(--g);color:#fff;transform:translateY(-2px)}
+.day.booked{background:var(--g);border-color:var(--g);color:#fff;cursor:not-allowed}
+.day.pending{background:var(--gs);border:1.5px dashed var(--g);color:var(--gt);cursor:not-allowed}
+.day.off{background:var(--sf);border-color:transparent;color:var(--mu);text-decoration:line-through;font-weight:500;cursor:not-allowed}
+.day.today{box-shadow:0 0 0 3px var(--gs),0 0 0 4.5px var(--g)}
+.empty{visibility:hidden}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;justify-content:center;margin-top:16px;font-size:.8rem;color:var(--mu)}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:5px;vertical-align:-2px;margin-right:5px;border:1.5px solid var(--g)}
+.how{display:grid;gap:10px;margin-top:24px}
+footer{text-align:center;color:var(--mu);font-size:.8rem;margin-top:36px;padding-top:18px;border-top:1px solid var(--ln)}
+footer p{margin:4px 0}
+.how div{display:flex;gap:12px;align-items:center;background:var(--sf);border-radius:16px;padding:12px 14px;font-size:.92rem}
+.how b{flex:none;width:30px;height:30px;border-radius:50%;background:var(--g);color:#fff;display:flex;align-items:center;justify-content:center}
+.modal{position:fixed;inset:0;background:rgba(5,15,10,.6);backdrop-filter:blur(3px);display:none;align-items:flex-end;justify-content:center;z-index:10}
+.modal.open{display:flex}
+.sheet{position:relative;background:var(--bg);width:100%;max-width:540px;max-height:94%;overflow:auto;border-radius:28px 28px 0 0;padding:24px 18px calc(20px + env(safe-area-inset-bottom,0px));animation:up .25s ease}
+@keyframes up{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+@media(min-width:600px){.modal{align-items:center}.sheet{border-radius:28px}}
+.x{position:absolute;top:14px;right:14px;width:38px;height:38px;border-radius:50%;border:0;background:var(--sf);color:var(--tx);font-size:1.2rem;cursor:pointer}
+.big{font-size:2.1rem;font-weight:900;color:var(--g);text-align:center;line-height:1.1;text-transform:uppercase;margin:6px 28px 0;letter-spacing:-.02em}
+.big small{display:block;font-size:.9rem;color:var(--mu);font-weight:600;text-transform:none;letter-spacing:0;margin-top:8px}
+.lab{font-weight:800;margin:20px 0 8px;font-size:.95rem;display:flex;gap:8px;align-items:center}
+.lab b{width:24px;height:24px;border-radius:50%;background:var(--g);color:#fff;font-size:.8rem;display:flex;align-items:center;justify-content:center}
+.meth{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.m{border:1.5px solid var(--ln);background:var(--card);color:var(--tx);border-radius:16px;padding:12px 4px;cursor:pointer;font-size:.85rem;font-weight:800;text-align:center}
+.m small{display:block;font-weight:500;color:var(--mu);font-size:.72rem;margin-top:2px}
+.m.on{border-color:var(--g);background:var(--gs);color:var(--gt)}
+.panel{background:var(--sf);border-radius:18px;padding:14px;margin-top:10px;font-size:.92rem}
+.panel ol{margin:10px 0 0;padding-left:20px;color:var(--mu)}
+.num{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--card);border:1.5px solid var(--g);border-radius:14px;padding:10px 12px;margin:10px 0}
+.num span{font-size:1.15rem;font-weight:800}
+.num button{border:0;background:var(--gs);color:var(--gt);font-size:.85rem;font-weight:700;padding:9px 14px;border-radius:10px;cursor:pointer}
+.btn{display:block;width:100%;text-align:center;border:0;border-radius:16px;padding:15px;font-size:1rem;font-weight:800;background:var(--g);color:#fff;text-decoration:none;cursor:pointer;margin-top:10px;box-shadow:0 6px 16px rgba(0,178,0,.28)}
+.btn.o{background:var(--card);color:var(--gt);border:1.5px solid var(--g);box-shadow:none}
+.btn:disabled{opacity:.4;box-shadow:none;cursor:not-allowed}
+.note{font-size:.8rem;color:var(--mu);margin-top:10px}
+input[type=text],select{width:100%;padding:14px;border:1.5px solid var(--ln);border-radius:14px;font-size:1rem;background:var(--card);color:var(--tx)}
+input:focus,select:focus{outline:2px solid var(--g);border-color:transparent}
+.drop{display:block;text-align:center;border:2px dashed var(--g);background:var(--gs);color:var(--gt);border-radius:16px;padding:18px;font-weight:700;cursor:pointer;word-break:break-all}
+.drop input{display:none}
+#prev{display:none;max-width:100%;max-height:170px;margin:10px auto 0;border-radius:12px}
+.hint{font-size:.8rem;color:var(--mu);text-align:center;margin:10px 0 0;min-height:1.2em}
+.ok{display:none;text-align:center;color:var(--gt);font-weight:700;margin-top:12px}
+</style>
+</head>
+<body>
+<div class="top"><div>
+  <span class="brand"><i></i>Paris rentable</span>
+  <button class="theme" id="theme" aria-label="Changer de thème"></button>
+</div></div>
+<div class="wrap">
+  <header class="hero">
+    <div class="avatar"><div class="im" id="avatar"></div><svg class="vb" viewBox="0 0 24 24" aria-label="Compte vérifié"><g fill="#1d9bf0"><rect x="4.2" y="4.2" width="15.6" height="15.6" rx="3.5"/><rect x="4.2" y="4.2" width="15.6" height="15.6" rx="3.5" transform="rotate(45 12 12)"/></g><path d="M8 12.3l2.9 2.9 5.2-5.6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <h1 id="name"></h1>
+    <p class="sub" id="tag"></p>
+    <div class="chips"><span class="chip">MonCash</span><span class="chip">NatCash</span><span class="chip">🌍 International</span><span class="chip">📞 Appel WhatsApp</span></div>
+    <div class="price"><b id="pv"></b><span>par date<br>appel vocal inclus</span></div>
+  </header>
+  <section class="card">
+    <div class="nav"><button id="pm" aria-label="Mois précédent">‹</button><h2 id="title"></h2><button id="nm" aria-label="Mois suivant">›</button></div>
+    <div class="grid" id="grid"></div>
+    <div class="legend">
+      <span><i style="background:var(--card)"></i>Disponible</span><span><i style="background:var(--g)"></i>Réservé</span>
+      <span><i style="background:var(--gs);border-style:dashed"></i>En attente</span><span><i style="background:var(--sf);border-color:var(--ln)"></i>Indisponible</span>
+    </div>
+  </section>
+  <section class="how">
+    <div><b>1</b>Choisis une date disponible</div>
+    <div><b>2</b>Fais le transfert MonCash ou NatCash</div>
+    <div><b>3</b>Envoie la capture d'écran pour confirmer</div>
+    <div><b>4</b>Reçois ton appel vocal WhatsApp</div>
+  </section>
+  <footer><p>© <span id="yr"></span> Paris Rentable. Tous droits réservés.</p><p>18+ • Les paris comportent des risques, joue de façon responsable.</p></footer>
+</div>
+
+<div class="modal" id="modal"><div class="sheet">
+  <button class="x" id="close" aria-label="Fermer">✕</button>
+  <p class="big" id="mdate"></p>
+  <div class="lab"><b>1</b>Moyen de paiement</div>
+  <div class="meth" id="meth">
+    <button class="m on" data-m="ht">MonCash<small>Haïti</small></button>
+    <button class="m" data-m="intl">International<small>Étranger</small></button>
+    <button class="m" data-m="nat">NatCash<small>Haïti</small></button>
+  </div>
+  <div class="panel" id="panel"></div>
+  <div class="lab"><b>2</b>Tes infos</div>
+  <input type="text" id="who" placeholder="Ton nom ou pseudo" autocomplete="name">
+  <select id="slot" style="margin-top:8px">
+    <option>Appel : je choisis l'heure avec toi</option><option>Appel : le matin</option><option>Appel : l'après-midi</option><option>Appel : le soir</option>
+  </select>
+  <div class="lab"><b>3</b>Capture d'écran du transfert</div>
+  <label class="drop" id="drop">📷 Ajouter la capture<input type="file" id="shot" accept="image/*"></label>
+  <img id="prev" alt="Aperçu">
+  <button class="btn" id="send" disabled>Envoyer ma réservation</button>
+  <p class="hint" id="hint"></p>
+  <p class="ok" id="ok">WhatsApp s'ouvre : envoie la capture et ton appel sera confirmé ✅</p>
+</div></div>
+
+<script>
+/* ====== À MODIFIER ====== */
+const CONFIG={
+  nom:"Paris rentable", tagline:"Paris sportifs • Réserve ta date", prix:"500 HTG",
+  moncash:"+509 31 77 25 25", natcash:"",          // ajoute ton numéro NatCash ici
+  whatsapp:"50931772525", photo:"photo.jpg",   // pour changer ta photo : remplace le fichier photo.jpg sur GitHub
+  reserves:["2026-10-15","2026-10-16","2026-10-20"],
+  indisponibles:["2026-10-18","2026-10-25"]
+};
+const L={
+  mcIOS:"https://apps.apple.com/us/app/moncash/id1498332907",
+  mcAnd:"https://play.google.com/store/apps/details?id=com.useboom.htwallet",
+  ncIOS:"https://apps.apple.com/app/id1613464862",
+  ncAnd:"https://play.google.com/store/search?q=natcash&c=apps",
+  intl:"https://moncashdfs.com/fr/transfert-d-argent-international",
+  tap:"https://help.taptapsend.com/en/receiving-countries/how-can-i-send-money-to-haiti",
+  ussd:"tel:*202%23"
+};
+/* ======================== */
+const $=id=>document.getElementById(id),pad=n=>String(n).padStart(2,"0");
+const ios=/iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent);
+const today=new Date();today.setHours(0,0,0,0);
+let pending=[],cur=new Date(today.getFullYear(),today.getMonth(),1),sel=null,meth="ht";
+try{pending=JSON.parse(localStorage.getItem("pending")||"[]")}catch(e){}
+const SUN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
+const MOON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
+function setTheme(t){document.documentElement.dataset.theme=t;$("theme").innerHTML=t==="dark"?SUN:MOON;try{localStorage.setItem("theme",t)}catch(e){}}
+let t0="light";try{t0=localStorage.getItem("theme")||"light"}catch(e){}
+setTheme(t0);$("theme").onclick=()=>setTheme(document.documentElement.dataset.theme==="dark"?"light":"dark");
+
+$("name").textContent=CONFIG.nom;$("tag").textContent=CONFIG.tagline;$("pv").textContent=CONFIG.prix;
+$("avatar").innerHTML=`<svg width="70" height="70" viewBox="0 0 24 24" fill="#fff"><circle cx="12" cy="8" r="4.2"/><path d="M3.5 21c0-4.6 3.8-7.5 8.5-7.5s8.5 2.9 8.5 7.5z"/></svg>`;
+if(CONFIG.photo){const im=new Image();im.alt="Photo de profil";im.onload=()=>{$("avatar").innerHTML="";$("avatar").appendChild(im)};im.src=CONFIG.photo}
+
+function render(){
+  const y=cur.getFullYear(),m=cur.getMonth();
+  $("title").textContent=cur.toLocaleDateString("fr-FR",{month:"long",year:"numeric"});
+  $("pm").disabled=(y===today.getFullYear()&&m===today.getMonth());
+  let h=["L","M","M","J","V","S","D"].map(d=>`<div class="dow">${d}</div>`).join("");
+  const first=(new Date(y,m,1).getDay()+6)%7,n=new Date(y,m+1,0).getDate();
+  for(let i=0;i<first;i++)h+='<div class="empty"></div>';
+  for(let d=1;d<=n;d++){
+    const k=`${y}-${pad(m+1)}-${pad(d)}`,dt=new Date(y,m,d);let c="free",dis="";
+    if(dt<today||CONFIG.indisponibles.includes(k)){c="off";dis="disabled"}
+    else if(CONFIG.reserves.includes(k)){c="booked";dis="disabled"}
+    else if(pending.includes(k)){c="pending";dis="disabled"}
+    if(+dt===+today)c+=" today";
+    h+=`<button class="day ${c}" ${dis} data-k="${k}" aria-label="${d}">${d}</button>`;
+  }
+  $("grid").innerHTML=h;
+}
+const num=v=>`<div class="num"><span>${v}</span><button data-copy="${v}">Copier</button></div>`;
+const btn=(h,t,o)=>`<a class="btn ${o?"o":""}" href="${h}" ${h.startsWith("tel")?"":'target="_blank" rel="noopener"'}>${t}</a>`;
+function panel(){
+  const P=CONFIG.prix;let h="";
+  if(meth==="ht")h=`Envoie <b>${P}</b> par MonCash à :${num(CONFIG.moncash)}${btn(ios?L.mcIOS:L.mcAnd,"Ouvrir l'application MonCash →")}${btn(L.ussd,"Ou composer *202# (Digicel)",1)}<ol><li>Choisis « Envoyer de l'argent »</li><li>Entre le numéro et le montant</li><li>Valide, puis fais une capture d'écran</li></ol>`;
+  else if(meth==="intl")h=`Tu es à l'étranger ? Utilise un service d'envoi partenaire de MonCash (Remitly, Ria, Taptap Send, WorldRemit, MoneyGram…). Choisis <b>MonCash</b> et entre ce numéro :${num(CONFIG.moncash)}${btn(L.intl,"Voir les services partenaires →")}${btn(L.tap,"Guide Taptap Send → Haïti",1)}<p class="note">Envoie l'équivalent de ${P}. Une fois l'envoi fait, fais une capture d'écran de la confirmation.</p>`;
+  else h=CONFIG.natcash?`Envoie <b>${P}</b> par NatCash à :${num(CONFIG.natcash)}${btn(ios?L.ncIOS:L.ncAnd,"Ouvrir l'application NatCash →")}${btn(L.ussd,"Ou composer *202# (Natcom)",1)}<p class="note">Depuis l'étranger : Taptap Send, CamTransfer ou Unitransfer vers NatCash.</p>${btn(L.tap,"Guide d'envoi international",1)}`:`<b>NatCash sera bientôt disponible.</b><p class="note">Utilise MonCash en attendant.</p>`;
+  $("panel").innerHTML=h;check();
+}
+$("meth").onclick=e=>{const b=e.target.closest(".m");if(!b)return;meth=b.dataset.m;
+  document.querySelectorAll(".m").forEach(x=>x.classList.toggle("on",x===b));panel()};
+$("panel").onclick=async e=>{const b=e.target.closest("[data-copy]");if(!b)return;
+  try{await navigator.clipboard.writeText(b.dataset.copy.replace(/[\s]/g,""));b.textContent="Copié ✓"}catch(_){b.textContent="Sélectionne"}};
+function openM(){$("modal").classList.add("open");document.body.style.overflow="hidden"}
+function closeM(){$("modal").classList.remove("open");document.body.style.overflow=""}
+$("grid").onclick=e=>{const b=e.target.closest(".day.free");if(!b)return;sel=b.dataset.k;
+  const [y,m,d]=sel.split("-").map(Number);
+  $("mdate").innerHTML=`${new Date(y,m-1,d).toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"})}<small>${CONFIG.prix} • appel vocal WhatsApp inclus</small>`;
+  $("ok").style.display="none";$("who").value="";$("shot").value="";$("prev").style.display="none";$("drop").firstChild.textContent="📷 Ajouter la capture";
+  meth="ht";document.querySelectorAll(".m").forEach(x=>x.classList.toggle("on",x.dataset.m==="ht"));
+  panel();openM()};
+$("pm").onclick=()=>{cur.setMonth(cur.getMonth()-1);render()};
+$("nm").onclick=()=>{cur.setMonth(cur.getMonth()+1);render()};
+$("close").onclick=closeM;
+$("modal").onclick=e=>{if(e.target===$("modal"))closeM()};
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeM()});
+function check(){
+  const n=$("who").value.trim(),f=$("shot").files.length,bad=meth==="nat"&&!CONFIG.natcash;
+  $("send").disabled=!(n&&f&&!bad);
+  $("hint").textContent=bad?"NatCash indisponible pour l'instant":!n?"Entre ton nom":!f?"Ajoute la capture d'écran du transfert":"";
+}
+$("who").oninput=check;
+$("shot").onchange=()=>{const f=$("shot").files[0];
+  if(f){$("prev").src=URL.createObjectURL(f);$("prev").style.display="block";$("drop").firstChild.textContent="✅ "+f.name}check()};
+$("send").onclick=()=>{const [y,m,d]=sel.split("-");
+  const via={ht:"MonCash Haïti",intl:"transfert international (MonCash)",nat:"NatCash"}[meth];
+  const msg=`Bonjour, je réserve le ${d}/${m}/${y}. Nom : ${$("who").value.trim()}. Paiement via ${via}. ${$("slot").value}. Voici la capture du transfert.`;
+  pending.push(sel);try{localStorage.setItem("pending",JSON.stringify(pending))}catch(e){}
+  $("ok").style.display="block";render();
+  window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`,"_blank")};
+$("yr").textContent=new Date().getFullYear();
+render();
+</script>
+</body>
+</html>
