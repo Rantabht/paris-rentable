@@ -49,10 +49,10 @@ h1{margin:22px 0 2px;font-size:1.75rem;letter-spacing:-.03em}
 .legend{display:flex;flex-wrap:wrap;gap:6px 14px;justify-content:center;margin-top:16px;font-size:.8rem;color:var(--mu)}
 .legend i{display:inline-block;width:14px;height:14px;border-radius:5px;vertical-align:-2px;margin-right:5px;border:1.5px solid var(--g)}
 .how{display:grid;gap:10px;margin-top:24px}
-footer{text-align:center;color:var(--mu);font-size:.8rem;margin-top:36px;padding-top:18px;border-top:1px solid var(--ln)}
-footer p{margin:4px 0}
 .how div{display:flex;gap:12px;align-items:center;background:var(--sf);border-radius:16px;padding:12px 14px;font-size:.92rem}
 .how b{flex:none;width:30px;height:30px;border-radius:50%;background:var(--g);color:#fff;display:flex;align-items:center;justify-content:center}
+footer{text-align:center;color:var(--mu);font-size:.8rem;margin-top:36px;padding-top:18px;border-top:1px solid var(--ln)}
+footer p{margin:4px 0}
 .modal{position:fixed;inset:0;background:rgba(5,15,10,.6);backdrop-filter:blur(3px);display:none;align-items:flex-end;justify-content:center;z-index:10}
 .modal.open{display:flex}
 .sheet{position:relative;background:var(--bg);width:100%;max-width:540px;max-height:94%;overflow:auto;border-radius:28px 28px 0 0;padding:24px 18px calc(20px + env(safe-area-inset-bottom,0px));animation:up .25s ease}
@@ -76,7 +76,7 @@ footer p{margin:4px 0}
 .btn.o{background:var(--card);color:var(--gt);border:1.5px solid var(--g);box-shadow:none}
 .btn:disabled{opacity:.4;box-shadow:none;cursor:not-allowed}
 .note{font-size:.8rem;color:var(--mu);margin-top:10px}
-input[type=text],select{width:100%;padding:14px;border:1.5px solid var(--ln);border-radius:14px;font-size:1rem;background:var(--card);color:var(--tx)}
+input[type=text],input[type=tel],select{width:100%;padding:14px;border:1.5px solid var(--ln);border-radius:14px;font-size:1rem;background:var(--card);color:var(--tx)}
 input:focus,select:focus{outline:2px solid var(--g);border-color:transparent}
 .drop{display:block;text-align:center;border:2px dashed var(--g);background:var(--gs);color:var(--gt);border-radius:16px;padding:18px;font-weight:700;cursor:pointer;word-break:break-all}
 .drop input{display:none}
@@ -126,7 +126,9 @@ input:focus,select:focus{outline:2px solid var(--g);border-color:transparent}
   </div>
   <div class="panel" id="panel"></div>
   <div class="lab"><b>2</b>Tes infos</div>
-  <input type="text" id="who" placeholder="Ton nom ou pseudo" autocomplete="name">
+  <input type="text" id="prenom" placeholder="Ton prénom" autocomplete="given-name">
+  <input type="text" id="nom" placeholder="Ton nom" autocomplete="family-name" style="margin-top:8px">
+  <input type="tel" id="tel" placeholder="Ton numéro (ex : +509 31 77 25 25)" autocomplete="tel" style="margin-top:8px">
   <select id="slot" style="margin-top:8px">
     <option>Appel : je choisis l'heure avec toi</option><option>Appel : le matin</option><option>Appel : l'après-midi</option><option>Appel : le soir</option>
   </select>
@@ -135,7 +137,7 @@ input:focus,select:focus{outline:2px solid var(--g);border-color:transparent}
   <img id="prev" alt="Aperçu">
   <button class="btn" id="send" disabled>Envoyer ma réservation</button>
   <p class="hint" id="hint"></p>
-  <p class="ok" id="ok">WhatsApp s'ouvre : envoie la capture et ton appel sera confirmé ✅</p>
+  <p class="ok" id="ok"></p>
 </div></div>
 
 <script>
@@ -143,7 +145,8 @@ input:focus,select:focus{outline:2px solid var(--g);border-color:transparent}
 const CONFIG={
   nom:"Paris rentable", tagline:"Paris sportifs • Réserve ta date", prix:"500 HTG",
   moncash:"+509 31 77 25 25", natcash:"",          // ajoute ton numéro NatCash ici
-  whatsapp:"50931772525", photo:"photo.jpg",   // pour changer ta photo : remplace le fichier photo.jpg sur GitHub
+  photo:"photo.jpg",                                // pour changer ta photo : remplace le fichier photo.jpg sur GitHub
+  scriptUrl:"https://script.google.com/macros/s/AKfycbxG6kRAJsiv_MPCI02lhw73olUOiO19c-FLD_NHQHprImi-PaaAGE_g_R1CCY4sTAuayw/exec",
   reserves:["2026-10-15","2026-10-16","2026-10-20"],
   indisponibles:["2026-10-18","2026-10-25"]
 };
@@ -207,7 +210,9 @@ function closeM(){$("modal").classList.remove("open");document.body.style.overfl
 $("grid").onclick=e=>{const b=e.target.closest(".day.free");if(!b)return;sel=b.dataset.k;
   const [y,m,d]=sel.split("-").map(Number);
   $("mdate").innerHTML=`${new Date(y,m-1,d).toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"})}<small>${CONFIG.prix} • appel vocal WhatsApp inclus</small>`;
-  $("ok").style.display="none";$("who").value="";$("shot").value="";$("prev").style.display="none";$("drop").firstChild.textContent="📷 Ajouter la capture";
+  $("ok").style.display="none";["prenom","nom","tel"].forEach(i=>$(i).value="");$("shot").value="";$("prev").style.display="none";
+  $("drop").firstChild.textContent="📷 Ajouter la capture";
+  $("send").textContent="Envoyer ma réservation";
   meth="ht";document.querySelectorAll(".m").forEach(x=>x.classList.toggle("on",x.dataset.m==="ht"));
   panel();openM()};
 $("pm").onclick=()=>{cur.setMonth(cur.getMonth()-1);render()};
@@ -216,19 +221,48 @@ $("close").onclick=closeM;
 $("modal").onclick=e=>{if(e.target===$("modal"))closeM()};
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeM()});
 function check(){
-  const n=$("who").value.trim(),f=$("shot").files.length,bad=meth==="nat"&&!CONFIG.natcash;
-  $("send").disabled=!(n&&f&&!bad);
-  $("hint").textContent=bad?"NatCash indisponible pour l'instant":!n?"Entre ton nom":!f?"Ajoute la capture d'écran du transfert":"";
+  const p=$("prenom").value.trim(),n=$("nom").value.trim(),t=$("tel").value.replace(/\D/g,""),
+    f=$("shot").files.length,bad=meth==="nat"&&!CONFIG.natcash;
+  $("send").disabled=!(p&&n&&t.length>=8&&f&&!bad);
+  $("hint").textContent=bad?"NatCash indisponible pour l'instant":!p?"Entre ton prénom":!n?"Entre ton nom":t.length<8?"Entre un numéro de téléphone valide":!f?"Ajoute la capture d'écran du transfert":"";
 }
-$("who").oninput=check;
+["prenom","nom","tel"].forEach(i=>$(i).oninput=check);
 $("shot").onchange=()=>{const f=$("shot").files[0];
   if(f){$("prev").src=URL.createObjectURL(f);$("prev").style.display="block";$("drop").firstChild.textContent="✅ "+f.name}check()};
-$("send").onclick=()=>{const [y,m,d]=sel.split("-");
+$("send").onclick=()=>{
+  const file=$("shot").files[0],btnS=$("send");
+  if(!file||!sel)return;
+  btnS.disabled=true;btnS.textContent="Envoi en cours…";$("hint").textContent="";
   const via={ht:"MonCash Haïti",intl:"transfert international (MonCash)",nat:"NatCash"}[meth];
-  const msg=`Bonjour, je réserve le ${d}/${m}/${y}. Nom : ${$("who").value.trim()}. Paiement via ${via}. ${$("slot").value}. Voici la capture du transfert.`;
-  pending.push(sel);try{localStorage.setItem("pending",JSON.stringify(pending))}catch(e){}
-  $("ok").style.display="block";render();
-  window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`,"_blank")};
+  const reader=new FileReader();
+  reader.onload=()=>{
+    const data={
+      date:sel,
+      prenom:$("prenom").value.trim(),
+      nom:$("nom").value.trim(),
+      tel:$("tel").value.trim(),
+      paiement:via,
+      appel:$("slot").value,
+      mime:file.type||"image/jpeg",
+      nom_fichier:file.name||"capture.jpg",
+      image:reader.result
+    };
+    fetch(CONFIG.scriptUrl,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(data)})
+      .then(()=>{
+        pending.push(sel);try{localStorage.setItem("pending",JSON.stringify(pending))}catch(e){}
+        $("ok").textContent="Réservation envoyée ✅ Ton appel vocal sera confirmé, merci !";
+        $("ok").style.display="block";
+        btnS.textContent="Envoyé ✅";
+        render();
+      })
+      .catch(()=>{
+        btnS.disabled=false;btnS.textContent="Envoyer ma réservation";
+        $("hint").textContent="Erreur d'envoi : vérifie ta connexion et réessaie";
+      });
+  };
+  reader.onerror=()=>{btnS.disabled=false;btnS.textContent="Envoyer ma réservation";$("hint").textContent="Impossible de lire la capture, essaie une autre image"};
+  reader.readAsDataURL(file);
+};
 $("yr").textContent=new Date().getFullYear();
 render();
 </script>
